@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1742982980 source:e:\my workspace\code\gomoku\gomoku\main.cpp
+	<bits/stdc++.h>
+	<SDL.h>
+	"constants.h"
+	"board.h"
+	"GamePlay.h"
+	"CheckWin.h"
+
+1742982469 e:\my workspace\code\gomoku\gomoku\constants.h
+
+1742980165 e:\my workspace\code\gomoku\gomoku\board.h
+	<vector>
+
+1742983503 e:\my workspace\code\gomoku\gomoku\gameplay.h
+
+1742983503 e:\my workspace\code\gomoku\gomoku\checkwin.h
+
