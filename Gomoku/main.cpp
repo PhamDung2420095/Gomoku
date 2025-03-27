@@ -2,8 +2,9 @@
 #include <SDL.h>
 #include "constants.h"
 #include "board.h"
-#include "GamePlay.h"
+#include "DrawPieces.h"
 #include "CheckWin.h"
+
 using namespace std;
 
 class Game{
