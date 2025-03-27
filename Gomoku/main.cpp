@@ -46,6 +46,18 @@ public:
         DrawPieces(renderer);
         SDL_RenderPresent(renderer);
     }
+
+    bool isFull(){
+        for(int i = 0; i < MAP_WIDTH; ++i){
+            for(int j = 0; j < MAP_HEIGHT; ++j){
+                if(board[i][j] == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     void run() {
         while(running){
             render();
@@ -59,7 +71,11 @@ public:
                     if(board[x][y] == 0){
                         board[x][y] = CurrentPlayer;
                         if(CheckWin(CurrentPlayer)){
-                            cout << "Player " << CurrentPlayer << " Win" << endl;
+                            cout << "Player " << CurrentPlayer << " Win!" << endl;
+                            running = false;
+                        }
+                        else if(isFull()){
+                            cout << "Draw!" << endl;
                             running = false;
                         }
                         CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;

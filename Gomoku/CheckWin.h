@@ -1,7 +1,7 @@
 #ifndef CHECKWIN_H_INCLUDED
 #define CHECKWIN_H_INCLUDED
 
-bool CheckWin(int player) {
+bool CheckWin(int player){
     for (int x = 0; x < GRID_SIZE; ++x){
         for (int y = 0; y < GRID_SIZE; ++y){
             if (board[y][x] == player){
