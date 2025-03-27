@@ -32,13 +32,13 @@ public:
             cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
-        /*font = TTF_OpenFont("PixelifySans-Regular.ttf", 24);
+        font = TTF_OpenFont("./Downloads/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf", 24);
         if(!font){
             cerr << "Font could not be created! SDL_Error: " << SDL_GetError() << endl;
-        }*/
+        }
     }
 
-    /*void renderText(const string &text, int x, int y, SDL_Color color){
+    void renderText(const string &text, int x, int y, SDL_Color color){
         SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
@@ -47,7 +47,7 @@ public:
 
         SDL_FreeSurface(surface);
         SDL_DestroyTexture(texture);
-    }*/
+    }
 
     void RenderMenu(){
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -58,11 +58,11 @@ public:
 
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderFillRect(renderer, &playButton);
-        ///renderText("Play", playButton.x + 70, playButton.y + 10, {0, 0, 0});
+        renderText("Play", playButton.x + 70, playButton.y + 10, {0, 0, 0});
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(renderer, &quitButton);
-        ///renderText("Quit", quitButton.x + 70, quitButton.y + 10, {0, 0, 0});
+        renderText("Quit", quitButton.x + 70, quitButton.y + 10, {0, 0, 0});
 
 
         SDL_RenderPresent(renderer);
