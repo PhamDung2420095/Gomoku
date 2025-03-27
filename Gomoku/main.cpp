@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "constants.h"
 #include "board.h"
 #include "DrawPieces.h"
 #include "CheckWin.h"
-#include <SDL_ttf.h>
 
 using namespace std;
 
@@ -18,7 +18,7 @@ public:
 
     Game() {
         running = true;
-        if(SDL_Init(SDL_INIT_VIDEO) < 0 || TTF_Init() == -1){
+        if(SDL_Init(SDL_INIT_VIDEO) < 0){
             cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
@@ -32,13 +32,20 @@ public:
             cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
-        font = TTF_OpenFont("./Downloads/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf", 24);
-        if(!font){
-            cerr << "Font could not be created! SDL_Error: " << SDL_GetError() << endl;
+
+        if (TTF_Init() == -1) {
+            cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << endl;
+            running = false;
+        }
+
+        font = TTF_OpenFont("PixelifySans-Regular.ttf", 24);
+        if (!font) {
+            cerr << "Failed to load font! SDL_Error: " << TTF_GetError() << endl;
+            running = false;
         }
     }
 
-    void renderText(const string &text, int x, int y, SDL_Color color){
+    void RenderText(const string& text, int x, int y, SDL_Color color) {
         SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
@@ -58,12 +65,13 @@ public:
 
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderFillRect(renderer, &playButton);
-        renderText("Play", playButton.x + 70, playButton.y + 10, {0, 0, 0});
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(renderer, &quitButton);
-        renderText("Quit", quitButton.x + 70, quitButton.y + 10, {0, 0, 0});
 
+        SDL_Color textColor = {0, 0, 0, 255};
+        RenderText("Play", playButton.x + 75, playButton.y + 10, textColor);
+        RenderText("Quit", quitButton.x + 75, quitButton.y + 10, textColor);
 
         SDL_RenderPresent(renderer);
 
