@@ -43,7 +43,7 @@ public:
         }
 
         DrawBoard(renderer);
-        GamePlay(renderer);
+        DrawPieces(renderer);
         SDL_RenderPresent(renderer);
     }
     void run() {
