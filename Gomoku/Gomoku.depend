@@ -1,20 +1,21 @@
 # depslib dependency file v1.0
-1743067221 source:e:\my workspace\code\gomoku\gomoku\main.cpp
+1743074315 source:e:\my workspace\code\gomoku\gomoku\main.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	"constants.h"
 	"board.h"
 	"DrawPieces.h"
 	"CheckWin.h"
+	<SDL_ttf.h>
 
-1743067060 e:\my workspace\code\gomoku\gomoku\constants.h
+1743078472 e:\my workspace\code\gomoku\gomoku\constants.h
 
 1743067205 e:\my workspace\code\gomoku\gomoku\board.h
 	<vector>
 
 1743064533 e:\my workspace\code\gomoku\gomoku\gameplay.h
 
-1742983503 e:\my workspace\code\gomoku\gomoku\checkwin.h
+1743068576 e:\my workspace\code\gomoku\gomoku\checkwin.h
 
 1743067236 e:\my workspace\code\gomoku\gomoku\drawpieces.h
 

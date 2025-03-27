@@ -4,6 +4,7 @@
 #include "board.h"
 #include "DrawPieces.h"
 #include "CheckWin.h"
+#include <SDL_ttf.h>
 
 using namespace std;
 
@@ -13,10 +14,11 @@ public:
     SDL_Renderer* renderer;
     bool running;
     SDL_Event event;
+    TTF_Font* font;
 
     Game() {
         running = true;
-        if(SDL_Init(SDL_INIT_VIDEO) < 0){
+        if(SDL_Init(SDL_INIT_VIDEO) < 0 || TTF_Init() == -1){
             cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
@@ -30,7 +32,65 @@ public:
             cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
+        /*font = TTF_OpenFont("PixelifySans-Regular.ttf", 24);
+        if(!font){
+            cerr << "Font could not be created! SDL_Error: " << SDL_GetError() << endl;
+        }*/
     }
+
+    /*void renderText(const string &text, int x, int y, SDL_Color color){
+        SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+        SDL_Rect dest = {x, y, surface->w, surface->h};
+        SDL_RenderCopy(renderer, texture, nullptr, &dest);
+
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
+    }*/
+
+    void RenderMenu(){
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_Rect playButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 50, 200, 50};
+        SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 20, 200, 50};
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderFillRect(renderer, &playButton);
+        ///renderText("Play", playButton.x + 70, playButton.y + 10, {0, 0, 0});
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(renderer, &quitButton);
+        ///renderText("Quit", quitButton.x + 70, quitButton.y + 10, {0, 0, 0});
+
+
+        SDL_RenderPresent(renderer);
+
+        bool inMenu = true;
+        while(inMenu){
+            while(SDL_PollEvent(&event)){
+                if(event.type == SDL_QUIT){
+                    running = false;
+                    return;
+                }
+                if(event.type == SDL_MOUSEBUTTONDOWN){
+                    int x = event.button.x;
+                    int y = event.button.y;
+
+                    if(x >= playButton.x && x <= playButton.x + playButton.w && y >= playButton.y && y <= playButton.y + playButton.h){
+                        inMenu = false;
+                    }
+                    if(x >= quitButton.x && x <= quitButton.x + playButton.w && y >= quitButton.y && y <= quitButton.y + quitButton.h){
+                        running = false;
+                        return;
+                    }
+                }
+            }
+            SDL_Delay(16);
+        }
+    }
+
     void render() {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -59,6 +119,8 @@ public:
     }
 
     void run() {
+        RenderMenu();
+
         while(running){
             render();
             while(SDL_PollEvent(&event)){

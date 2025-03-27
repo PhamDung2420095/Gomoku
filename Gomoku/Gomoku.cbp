@@ -35,7 +35,7 @@
 		<Unit filename="CheckWin.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="GamePlay.h">
+		<Unit filename="DrawPieces.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="board.h">
