@@ -56,7 +56,7 @@ public:
         SDL_DestroyTexture(texture);
     }
 
-    void RenderMenu(){
+    void RenderMenu(){ // menu game
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
@@ -71,8 +71,7 @@ public:
             SDL_FreeSurface(titleSurface);
             SDL_DestroyTexture(titleTexture);
             TTF_CloseFont(largeFont);
-    }
-
+        }
 
         SDL_Rect playButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 50, 200, 50};
         SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 80, 200, 50};
@@ -112,6 +111,60 @@ public:
             SDL_Delay(16);
         }
     }
+
+    void renderEndMenu(const string& announce){
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_Color textColor = {0, 0, 0, 255};
+        RenderText(announce, SCREEN_WIDTH / 2 - 100, 150, textColor);
+
+        SDL_Rect replayButton = {SCREEN_WIDTH / 2 - 100, 300, 200, 50};
+        SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, 400, 200, 50};
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderFillRect(renderer, &replayButton);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(renderer, &quitButton);
+
+        RenderText("Play Again", replayButton.x + 40, replayButton.y + 10, textColor);
+        RenderText("Quit", quitButton.x + 75, quitButton.y + 10, textColor);
+
+        SDL_RenderPresent(renderer);
+
+        bool inEndMenu = true;
+        while(inEndMenu){
+            while(SDL_PollEvent(&event)){
+                if(event.type == SDL_QUIT){
+                    running = false;
+                    return;
+                }
+                if(event.type == SDL_MOUSEBUTTONDOWN){
+                    int x = event.button.x;
+                    int y = event.button.y;
+
+                    if(x >= replayButton.x && x <= replayButton.x + replayButton.w && y >= replayButton.y && y <= replayButton.y + replayButton.h){
+                        ResetGame();
+                        return;
+                    }
+
+                    if (x >= quitButton.x && x <= quitButton.x + quitButton.w && y >= quitButton.y && y <= quitButton.y + quitButton.h) {
+                        running = false;
+                        return;
+                    }
+                }
+            }
+            SDL_Delay(16);
+        }
+    }
+    void ResetGame() {
+        for (auto& row : board) {
+            fill(row.begin(), row.end(), 0);
+        }
+        CurrentPlayer = 1;
+    }
+
 
     void render() {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -155,12 +208,10 @@ public:
                     if(board[x][y] == 0){
                         board[x][y] = CurrentPlayer;
                         if(CheckWin(CurrentPlayer)){
-                            cout << "Player " << CurrentPlayer << " Win!" << endl;
-                            running = false;
+                            renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
                         }
                         else if(isFull()){
-                            cout << "Draw!" << endl;
-                            running = false;
+                            renderEndMenu("Draw!");
                         }
                         CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
                     }
