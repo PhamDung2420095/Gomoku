@@ -159,7 +159,7 @@ public:
         }
     }
     void ResetGame() {
-        for (auto& row : board) {
+        for(auto& row : board){
             fill(row.begin(), row.end(), 0);
         }
         CurrentPlayer = 1;
