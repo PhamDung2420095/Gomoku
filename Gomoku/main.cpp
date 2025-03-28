@@ -38,7 +38,7 @@ public:
             running = false;
         }
 
-        font = TTF_OpenFont("PixelifySans-Regular.ttf", 24);
+        font = TTF_OpenFont("VeraMoBd.ttf", 24);
         if (!font) {
             cerr << "Failed to load font! SDL_Error: " << TTF_GetError() << endl;
             running = false;
@@ -60,8 +60,22 @@ public:
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
+        SDL_Color titleColor = {0, 0, 0, 255};
+        TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64);
+        if (largeFont) {
+            SDL_Surface* titleSurface = TTF_RenderText_Solid(largeFont, "Gomoku", titleColor);
+            SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
+            SDL_Rect titleRect = {SCREEN_WIDTH / 2 - titleSurface->w / 2, 100, titleSurface->w, titleSurface->h};
+            SDL_RenderCopy(renderer, titleTexture, nullptr, &titleRect);
+
+            SDL_FreeSurface(titleSurface);
+            SDL_DestroyTexture(titleTexture);
+            TTF_CloseFont(largeFont);
+    }
+
+
         SDL_Rect playButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 50, 200, 50};
-        SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 20, 200, 50};
+        SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 + 80, 200, 50};
 
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderFillRect(renderer, &playButton);
