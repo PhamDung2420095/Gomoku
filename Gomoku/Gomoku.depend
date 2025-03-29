@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1743154423 source:e:\my workspace\code\gomoku\gomoku\main.cpp
+1743267580 source:e:\my workspace\code\gomoku\gomoku\main.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_ttf.h>
+	<SDL_image.h>
 	"constants.h"
 	"board.h"
 	"DrawPieces.h"

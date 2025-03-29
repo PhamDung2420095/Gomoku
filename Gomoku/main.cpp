@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_image.h>
 #include "constants.h"
 #include "board.h"
 #include "DrawPieces.h"
@@ -12,9 +13,11 @@ class Game{
 public:
     SDL_Window* window;
     SDL_Renderer* renderer;
-    bool running;
     SDL_Event event;
     TTF_Font* font;
+    SDL_Surface* bgSurface = IMG_Load("background.jpg");
+    SDL_Texture* bgTexture = nullptr;
+    bool running = true;
 
     Game() {
         running = true;
@@ -32,8 +35,7 @@ public:
             cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
             running = false;
         }
-
-        if (TTF_Init() == -1) {
+        if(TTF_Init() == -1) {
             cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << endl;
             running = false;
         }
@@ -57,11 +59,25 @@ public:
     }
 
     void RenderMenu(){ // menu game
+        if(bgSurface) {
+            bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
+            SDL_FreeSurface(bgSurface);
+        }
+        else {
+            cerr << "Failed to load background image: " << IMG_GetError() << endl;
+        }
+
+
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
         SDL_Color titleColor = {0, 0, 0, 255};
         TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64);
+
+        if(bgTexture){
+            SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr);
+        }
+
         if (largeFont) {
             SDL_Surface* titleSurface = TTF_RenderText_Solid(largeFont, "Gomoku", titleColor);
             SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
