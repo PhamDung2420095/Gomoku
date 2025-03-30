@@ -77,7 +77,7 @@ public:
 
         SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr);
 
-        if (largeFont) {
+        if(largeFont) {
             SDL_Surface* titleSurface = TTF_RenderText_Solid(largeFont, "Gomoku", titleColor);
             SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
             SDL_Rect titleRect = {SCREEN_WIDTH / 2 - titleSurface->w / 2, 100, titleSurface->w, titleSurface->h};
@@ -218,17 +218,22 @@ public:
                     running = false;
                 }
                 if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT){
-                    int x = event.button.x / TILE_SIZE;
-                    int y = event.button.y / TILE_SIZE;
-                    if(board[x][y] == 0){
-                        board[x][y] = CurrentPlayer;
-                        if(CheckWin(CurrentPlayer)){
-                            renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
+                    int mouseX = event.button.x;
+                    int mouseY = event.button.y;
+                    if(mouseX >= startX && mouseX < startX + GRID_SIZE * TILE_SIZE && mouseY >= startY && mouseY < startY + GRID_SIZE * TILE_SIZE){
+                        int x = (mouseX - startX) / TILE_SIZE;
+                        int y = (mouseY - startY) / TILE_SIZE;
+
+                        if(board[x][y] == 0){
+                            board[x][y] = CurrentPlayer;
+                            if(CheckWin(CurrentPlayer)){
+                                renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
+                            }
+                            else if(isFull()){
+                                renderEndMenu("Draw!");
+                            }
+                            CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
                         }
-                        else if(isFull()){
-                            renderEndMenu("Draw!");
-                        }
-                        CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
                     }
                 }
             }
