@@ -18,6 +18,7 @@ public:
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
     bool running = true;
+    bool FirstMove = false;
     string player1 = "Player 1";
     string player2 = "Player 2";
     Game() {
@@ -227,6 +228,7 @@ public:
 
         while(running){
             render();
+
             while(SDL_PollEvent(&event)){
                 if(event.type == SDL_QUIT){
                     running = false;
@@ -242,11 +244,18 @@ public:
                             board[x][y] = CurrentPlayer;
                             if(CheckWin(CurrentPlayer)){
                                 renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
+                                FirstMove = true;
                             }
                             else if(isFull()){
                                 renderEndMenu("Draw!");
+                                FirstMove = true;
                             }
-                            CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
+                            if(FirstMove){
+                                FirstMove = false;
+                            }
+                            else{
+                                CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;
+                            }
                         }
                     }
                 }
