@@ -45,16 +45,17 @@ public:
             cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << endl;
             running = false;
         }
-        bgSurface = IMG_Load("background.jpg");
-        bgTexture = nullptr;
-        if(!bgSurface){
-            cerr << "Failed to load background image: " << IMG_GetError() << endl;
-            running = false;
-        }
 
         font = TTF_OpenFont("VeraMoBd.ttf", 24);
         if (!font) {
             cerr << "Failed to load font! SDL_Error: " << TTF_GetError() << endl;
+            running = false;
+        }
+
+        bgSurface = IMG_Load("background.jpg");
+        bgTexture = nullptr;
+        if(!bgSurface){
+            cerr << "Failed to load background image: " << IMG_GetError() << endl;
             running = false;
         }
 
