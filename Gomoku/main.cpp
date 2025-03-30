@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include "constants.h"
 #include "board.h"
 #include "DrawPieces.h"
@@ -17,6 +18,7 @@ public:
     TTF_Font* font;
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
+    Mix_Chunk* PieceSound;
     bool running = true;
     bool FirstMove = false;
     string player1 = "Player 1";
@@ -42,7 +44,6 @@ public:
             cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << endl;
             running = false;
         }
-
         bgSurface = IMG_Load("background.jpg");
         bgTexture = nullptr;
         if(!bgSurface){
@@ -53,6 +54,16 @@ public:
         font = TTF_OpenFont("VeraMoBd.ttf", 24);
         if (!font) {
             cerr << "Failed to load font! SDL_Error: " << TTF_GetError() << endl;
+            running = false;
+        }
+
+        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
+            cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << endl;
+            running = false;
+        }
+        PieceSound = Mix_LoadWAV("PieceSound.wav");
+        if (!PieceSound){
+            cerr << "Failed to load piece sound! SDL_mixer Error: " << Mix_GetError() << endl;
             running = false;
         }
     }
@@ -233,6 +244,7 @@ public:
 
                         if(board[x][y] == 0){
                             board[x][y] = CurrentPlayer;
+                            Mix_PlayChannel(-1, PieceSound, 0); // Phát âm thanh đánh quân
                             int result = CheckWin(CurrentPlayer);
                             if(result == 1){
                                 renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
@@ -254,6 +266,8 @@ public:
     }
 
     ~Game() {
+        Mix_FreeChunk(PieceSound);
+        Mix_CloseAudio();
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();

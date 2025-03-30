@@ -1,15 +1,16 @@
 # depslib dependency file v1.0
-1743355416 source:e:\my workspace\code\gomoku\gomoku\main.cpp
+1743364610 source:e:\my workspace\code\gomoku\gomoku\main.cpp
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL_image.h>
+	<SDL_mixer.h>
 	"constants.h"
 	"board.h"
 	"DrawPieces.h"
 	"CheckWin.h"
 
-1743351475 e:\my workspace\code\gomoku\gomoku\constants.h
+1743357839 e:\my workspace\code\gomoku\gomoku\constants.h
 
 1743329720 e:\my workspace\code\gomoku\gomoku\board.h
 	<vector>
