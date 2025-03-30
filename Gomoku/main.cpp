@@ -212,17 +212,6 @@ public:
         SDL_RenderPresent(renderer);
     }
 
-    bool isFull(){
-        for(int i = 0; i < MAP_WIDTH; ++i){
-            for(int j = 0; j < MAP_HEIGHT; ++j){
-                if(board[i][j] == 0){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     void run() {
         RenderMenu();
 
@@ -242,16 +231,14 @@ public:
 
                         if(board[x][y] == 0){
                             board[x][y] = CurrentPlayer;
-                            if(CheckWin(CurrentPlayer)){
+                            int result = CheckWin(CurrentPlayer);
+                            if(result == 1){
                                 renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
                                 FirstMove = true;
                             }
-                            else if(isFull()){
+                            else if(result == -1){
                                 renderEndMenu("Draw!");
                                 FirstMove = true;
-                            }
-                            if(FirstMove){
-                                FirstMove = false;
                             }
                             else{
                                 CurrentPlayer = (CurrentPlayer == 1) ? 2 : 1;

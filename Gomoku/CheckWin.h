@@ -2,8 +2,13 @@
 #define CHECKWIN_H_INCLUDED
 
 bool CheckWin(int player){
+    bool isDraw = true;
+
     for (int x = 0; x < GRID_SIZE; ++x){
         for (int y = 0; y < GRID_SIZE; ++y){
+            if(board[y][x] == 0){
+                isDraw = false;
+            }
             if (board[y][x] == player){
                 ///hướng ngang
                 if (x + 4 < GRID_SIZE && board[y][x + 1] == player && board[y][x + 2] == player && board[y][x + 3] == player && board[y][x + 4] == player)
@@ -20,6 +25,8 @@ bool CheckWin(int player){
             }
         }
     }
+    if(isDraw)
+        return -1;
     return false;
 }
 
