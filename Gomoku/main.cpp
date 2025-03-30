@@ -18,7 +18,8 @@ public:
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
     bool running = true;
-
+    string player1 = "Player 1";
+    string player2 = "Player 2";
     Game() {
         running = true;
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -127,6 +128,19 @@ public:
         }
     }
 
+    void renderPlayerNames(){
+        SDL_Color activeColor = {0, 0, 0, 255};
+        SDL_Color inactiveColor = {211, 211, 211, 255};
+        if(CurrentPlayer == 1){
+            RenderText(player1, 50, 20, activeColor);
+            RenderText(player2, SCREEN_WIDTH - 150, 20, inactiveColor);
+        }
+        else{
+            RenderText(player1, 50, 20, inactiveColor);
+            RenderText(player2, SCREEN_WIDTH - 150, 20, activeColor);
+        }
+    }
+
     void renderEndMenu(const string& announce){
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -173,13 +187,13 @@ public:
             SDL_Delay(16);
         }
     }
+
     void ResetGame() {
         for(auto& row : board){
             fill(row.begin(), row.end(), 0);
         }
         CurrentPlayer = 1;
     }
-
 
     void render() {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -191,7 +205,7 @@ public:
                 SDL_RenderFillRect(renderer, &tile);
             }
         }
-
+        renderPlayerNames();
         DrawBoard(renderer);
         DrawPieces(renderer);
         SDL_RenderPresent(renderer);
