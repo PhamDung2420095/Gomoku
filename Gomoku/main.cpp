@@ -21,6 +21,7 @@ public:
     bool FirstMove = false;
     string player1 = "Player 1";
     string player2 = "Player 2";
+
     Game() {
         running = true;
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -56,7 +57,7 @@ public:
         }
     }
 
-    void RenderText(const string& text, int x, int y, SDL_Color color) {
+    void RenderText(const string& text, int x, int y, SDL_Color color){
         SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
@@ -67,7 +68,7 @@ public:
         SDL_DestroyTexture(texture);
     }
 
-    void RenderMenu(){
+    void RenderMenu(){ // hiện menu game
         bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
         SDL_FreeSurface(bgSurface);
 
@@ -75,11 +76,11 @@ public:
         SDL_RenderClear(renderer);
 
         SDL_Color titleColor = {0, 0, 0, 255};
-        TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64);
+        TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64); // tên game
 
-        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr);
+        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr); // hiện background
 
-        if(largeFont) {
+        if(largeFont){
             SDL_Surface* titleSurface = TTF_RenderText_Solid(largeFont, "Gomoku", titleColor);
             SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
             SDL_Rect titleRect = {SCREEN_WIDTH / 2 - titleSurface->w / 2, 100, titleSurface->w, titleSurface->h};
@@ -129,7 +130,7 @@ public:
         }
     }
 
-    void renderPlayerNames(){
+    void renderPlayerNames(){ // hiện tên người chơi
         SDL_Color activeColor = {0, 0, 0, 255};
         SDL_Color inactiveColor = {211, 211, 211, 255};
         if(CurrentPlayer == 1){
@@ -142,7 +143,7 @@ public:
         }
     }
 
-    void renderEndMenu(const string& announce){
+    void renderEndMenu(const string& announce){ // thông báo kết quả
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
@@ -189,7 +190,7 @@ public:
         }
     }
 
-    void ResetGame() {
+    void ResetGame(){
         for(auto& row : board){
             fill(row.begin(), row.end(), 0);
         }
@@ -217,7 +218,6 @@ public:
 
         while(running){
             render();
-
             while(SDL_PollEvent(&event)){
                 if(event.type == SDL_QUIT){
                     running = false;
