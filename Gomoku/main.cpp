@@ -15,8 +15,8 @@ public:
     SDL_Renderer* renderer;
     SDL_Event event;
     TTF_Font* font;
-    SDL_Surface* bgSurface = IMG_Load("background.jpg");
-    SDL_Texture* bgTexture = nullptr;
+    SDL_Surface* bgSurface;
+    SDL_Texture* bgTexture;
     bool running = true;
 
     Game() {
@@ -40,6 +40,13 @@ public:
             running = false;
         }
 
+        bgSurface = IMG_Load("background.jpg");
+        bgTexture = nullptr;
+        if(!bgSurface){
+            cerr << "Failed to load background image: " << IMG_GetError() << endl;
+            running = false;
+        }
+
         font = TTF_OpenFont("VeraMoBd.ttf", 24);
         if (!font) {
             cerr << "Failed to load font! SDL_Error: " << TTF_GetError() << endl;
@@ -59,14 +66,8 @@ public:
     }
 
     void RenderMenu(){ // menu game
-        if(bgSurface) {
-            bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
-            SDL_FreeSurface(bgSurface);
-        }
-        else {
-            cerr << "Failed to load background image: " << IMG_GetError() << endl;
-        }
-
+        bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
+        SDL_FreeSurface(bgSurface);
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -74,9 +75,7 @@ public:
         SDL_Color titleColor = {0, 0, 0, 255};
         TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64);
 
-        if(bgTexture){
-            SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr);
-        }
+        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr);
 
         if (largeFont) {
             SDL_Surface* titleSurface = TTF_RenderText_Solid(largeFont, "Gomoku", titleColor);
