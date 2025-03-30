@@ -65,7 +65,7 @@ public:
         SDL_DestroyTexture(texture);
     }
 
-    void RenderMenu(){ // menu game
+    void RenderMenu(){
         bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
         SDL_FreeSurface(bgSurface);
 

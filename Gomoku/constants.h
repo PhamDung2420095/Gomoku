@@ -1,7 +1,7 @@
 #ifndef CONSTANTS_H_INCLUDED
 #define CONSTANTS_H_INCLUDED
 
-const int SCREEN_HEIGHT = 800;
+const int SCREEN_HEIGHT = 700;
 const int SCREEN_WIDTH = 600;
 const int GRID_SIZE = 15;
 const int TILE_SIZE = SCREEN_WIDTH / GRID_SIZE;
