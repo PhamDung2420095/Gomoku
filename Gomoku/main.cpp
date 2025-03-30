@@ -19,6 +19,7 @@ public:
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
     Mix_Chunk* PieceSound;
+    Mix_Chunk* WinnerSound;
     bool running = true;
     bool FirstMove = false;
     string player1 = "Player 1";
@@ -62,8 +63,9 @@ public:
             running = false;
         }
         PieceSound = Mix_LoadWAV("PieceSound.wav");
-        if (!PieceSound){
-            cerr << "Failed to load piece sound! SDL_mixer Error: " << Mix_GetError() << endl;
+        WinnerSound = Mix_LoadWAV("WinnerSound.wav");
+        if (!PieceSound || !WinnerSound){
+            cerr << "Failed to load piece sound of winner sound! SDL_mixer Error: " << Mix_GetError() << endl;
             running = false;
         }
     }
@@ -247,6 +249,7 @@ public:
                             Mix_PlayChannel(-1, PieceSound, 0); // Phát âm thanh đánh quân
                             int result = CheckWin(CurrentPlayer);
                             if(result == 1){
+                                Mix_PlayChannel(-1, WinnerSound, 0); // Phát âm thanh chiến thắng
                                 renderEndMenu("Player " + to_string(CurrentPlayer) + " win!");
                                 FirstMove = true;
                             }
@@ -267,6 +270,7 @@ public:
 
     ~Game() {
         Mix_FreeChunk(PieceSound);
+        Mix_FreeChunk(WinnerSound);
         Mix_CloseAudio();
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
