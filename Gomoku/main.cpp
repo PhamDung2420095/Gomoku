@@ -18,6 +18,8 @@ public:
     TTF_Font* font;
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
+    SDL_Surface* winnerBgSurface;
+    SDL_Texture* winnerBgTexture;
     Mix_Chunk* PieceSound;
     Mix_Chunk* WinnerSound;
     bool running = true;
@@ -58,6 +60,11 @@ public:
             cerr << "Failed to load background image: " << IMG_GetError() << endl;
             running = false;
         }
+        winnerBgSurface = IMG_Load("WinnerBackground.jpg");
+        if(!winnerBgSurface){
+            cerr << "Failed to load winner background image: " << IMG_GetError() << endl;
+            running = false;
+        }
 
         if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
             cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << endl;
@@ -85,9 +92,6 @@ public:
     void RenderMenu(){ // hiện menu game
         bgTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
         SDL_FreeSurface(bgSurface);
-
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderClear(renderer);
 
         SDL_Color titleColor = {0, 0, 0, 255};
         TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 64); // tên game
@@ -158,10 +162,8 @@ public:
     }
 
     void renderEndMenu(const string& announce){ // thông báo kết quả
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderClear(renderer);
-
-        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr); // End Menu background
+        winnerBgTexture = SDL_CreateTextureFromSurface(renderer, winnerBgSurface);
+        SDL_RenderCopy(renderer, winnerBgTexture, nullptr, nullptr); // Hiện end menu background
 
         SDL_Color textColor = {0, 0, 0, 255};
         TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 48);
