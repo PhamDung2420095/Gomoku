@@ -131,7 +131,7 @@ public:
                     running = false;
                     return;
                 }
-                if(event.type == SDL_MOUSEBUTTONDOWN){
+                if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT){
                     int x = event.button.x;
                     int y = event.button.y;
 
@@ -200,7 +200,7 @@ public:
                     running = false;
                     return;
                 }
-                if(event.type == SDL_MOUSEBUTTONDOWN){
+                if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT){
                     int x = event.button.x;
                     int y = event.button.y;
 
