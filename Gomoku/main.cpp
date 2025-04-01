@@ -82,8 +82,8 @@ public:
         SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-        SDL_Rect dest = {x, y, surface->w, surface->h};
-        SDL_RenderCopy(renderer, texture, nullptr, &dest);
+        SDL_Rect rect = {x, y, surface->w, surface->h};
+        SDL_RenderCopy(renderer, texture, nullptr, &rect);
 
         SDL_FreeSurface(surface);
         SDL_DestroyTexture(texture);
