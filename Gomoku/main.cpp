@@ -18,8 +18,6 @@ public:
     TTF_Font* font;
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
-    SDL_Surface* winnerSurface;
-    SDL_Texture* winnerTexture;
     Mix_Chunk* PieceSound;
     Mix_Chunk* WinnerSound;
     bool running = true;
@@ -58,11 +56,6 @@ public:
         bgTexture = nullptr;
         if(!bgSurface){
             cerr << "Failed to load background image: " << IMG_GetError() << endl;
-            running = false;
-        }
-        winnerSurface = IMG_Load("WinnerBackground.jpg");
-        if(!winnerSurface){
-            cerr << "Failed to load winner background image: " << IMG_GetError() << endl;
             running = false;
         }
 
@@ -165,13 +158,10 @@ public:
     }
 
     void renderEndMenu(const string& announce){ // thông báo kết quả
-        winnerTexture = SDL_CreateTextureFromSurface(renderer, winnerSurface);
-        SDL_FreeSurface(winnerSurface);
-
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        SDL_RenderCopy(renderer, winnerTexture, nullptr, nullptr); // End Menu background
+        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr); // End Menu background
 
         SDL_Color textColor = {0, 0, 0, 255};
         TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 48);
