@@ -18,6 +18,8 @@ public:
     TTF_Font* font;
     SDL_Surface* bgSurface;
     SDL_Texture* bgTexture;
+    SDL_Surface* winnerSurface;
+    SDL_Texture* winnerTexture;
     Mix_Chunk* PieceSound;
     Mix_Chunk* WinnerSound;
     bool running = true;
@@ -56,6 +58,11 @@ public:
         bgTexture = nullptr;
         if(!bgSurface){
             cerr << "Failed to load background image: " << IMG_GetError() << endl;
+            running = false;
+        }
+        winnerSurface = IMG_Load("WinnerBackground.jpg");
+        if(!winnerSurface){
+            cerr << "Failed to load winner background image: " << IMG_GetError() << endl;
             running = false;
         }
 
@@ -158,13 +165,27 @@ public:
     }
 
     void renderEndMenu(const string& announce){ // thông báo kết quả
+        winnerTexture = SDL_CreateTextureFromSurface(renderer, winnerSurface);
+        SDL_FreeSurface(winnerSurface);
+
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        SDL_RenderCopy(renderer, bgTexture, nullptr, nullptr); // End Menu background
+        SDL_RenderCopy(renderer, winnerTexture, nullptr, nullptr); // End Menu background
 
         SDL_Color textColor = {0, 0, 0, 255};
-        RenderText(announce, SCREEN_WIDTH / 2 - 100, 150, textColor);
+        TTF_Font* largeFont = TTF_OpenFont("VeraMoBd.ttf", 48);
+        if(largeFont){
+            SDL_Surface* surface = TTF_RenderText_Solid(largeFont, announce.c_str(), textColor);
+            SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+            SDL_Rect dest = {SCREEN_WIDTH / 2 - surface->w / 2, 150, surface->w, surface->h}; // Căn giữa
+            SDL_RenderCopy(renderer, texture, nullptr, &dest);
+
+            SDL_FreeSurface(surface);
+            SDL_DestroyTexture(texture);
+            TTF_CloseFont(largeFont);
+        }
 
         SDL_Rect replayButton = {SCREEN_WIDTH / 2 - 100, 300, 200, 50};
         SDL_Rect quitButton = {SCREEN_WIDTH / 2 - 100, 400, 200, 50};
